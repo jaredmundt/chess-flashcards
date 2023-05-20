@@ -1,4 +1,6 @@
 from PIL import Image, ImageDraw
+import os
+import shutil
 
 # Define the file paths of the base images
 black_base_image_path = "img/starting-black.png"
@@ -6,14 +8,17 @@ white_base_image_path = "img/starting-white.png"
 
 # Define the output directory to save the generated images
 output_directory = "output/"
+if os.path.exists(output_directory):
+    shutil.rmtree(output_directory)
+os.makedirs(output_directory)
 
 # Define the size of the chessboard
 board_size = 8
 
 # Define the radius and outline color of the circle
-circle_radius = 40
+circle_radius = 50
 outline_color = "green"
-outline_thickness = 10
+outline_thickness = 12
 
 # Load the base images
 black_base_image = Image.open(black_base_image_path)
@@ -47,7 +52,9 @@ for row in range(board_size):
         # Draw a thicker circle on the image for each square
         black_draw.ellipse(circle_coords, outline=outline_color, width=outline_thickness)
         white_draw.ellipse(circle_coords, outline=outline_color, width=outline_thickness)
-
+        
         # Save the generated images
-        black_image.save(f"{output_directory}black_square_{row}_{col}.png")
-        white_image.save(f"{output_directory}white_square_{row}_{col}.png")
+        letter = chr(ord('a') + row)
+        black_image.save(f"{output_directory}black_{letter}{col}.png")
+        white_image.save(f"{output_directory}white_{letter}{col}.png")
+
